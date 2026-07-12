@@ -1,4 +1,4 @@
-# SPARKCOmmunity OS — Website Handoff
+# SPARKCOmmunity OS - Website Handoff
 
 This is a static HTML/CSS/JS landing page for SPARKCOmmunity OS.
 
@@ -20,8 +20,8 @@ in a browser.
 
 ## Main files
 
-- `index.html` — the full website in one file.
-- `assets/` — images used by the website.
+- `index.html` - the full website in one file.
+- `assets/` - images used by the website.
 
 ## Image replacement points
 
@@ -147,3 +147,59 @@ Changes:
 - Spark Match meeting animation uses two realistic portrait avatars.
 - Circular-avatar language block uses a real room/avatar visual with subtle motion.
 - Flat root upload structure is preserved.
+
+## v40 copy polish
+Removed long em/en dashes from the visible copy so the text feels more human and less AI-generated.
+
+## v41 avatar bridge
+
+The circular avatar section now has a moving bridge between the room image and the copy:
+- two realistic avatar faces
+- subtle motion between image and text
+- English layout now leaves space like the Hebrew layout
+
+
+Update v42
+- Added `sparkcommunity-logo.png` (integrated Sparkcommunity logo for the header).
+- Updated the avatar bridge section so animated avatar circles move in the gap between the image and the text.
+- Bolded the recurring revenue sentence in both English and Hebrew.
+
+## v43 favicon
+
+Added favicon assets:
+- favicon.ico
+- favicon.png
+- favicon-32.png
+- favicon-16.png
+- apple-touch-icon.png
+
+The favicon uses the brand purple background, lime rounded square, and a crisp dark spark mark.
+
+## v44 purple favicon
+
+Updated favicon concept:
+- Purple rounded square using Sparkco purple.
+- Lime spark inside for brand continuity and strong contrast.
+- Transparent outer background.
+
+## v45 WhatsApp CTA
+
+Conversation CTAs now link to WhatsApp:
+https://wa.me/972544753064
+
+Public email remains:
+info@sparkco.space
+
+## v46 all changes package
+
+This is the full flat upload package including:
+- Updated Sparkcommunity logo asset.
+- Purple favicon files.
+- WhatsApp CTA links.
+- Avatar bridge section.
+- Spark Match avatar portraits.
+- Updated room visuals.
+- Bold recurring revenue sentence.
+- No long AI-style dashes in the visible copy.
+
+Upload all files in this folder to the GitHub repository root.
