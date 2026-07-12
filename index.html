@@ -1429,6 +1429,23 @@
       max-width: 510px;
     }
 
+
+    .proof-note {
+      grid-template-columns: minmax(260px, 340px) 1fr;
+    }
+
+    body.he .proof-note {
+      grid-template-columns: 1fr minmax(260px, 340px);
+    }
+
+    @media (max-width: 1060px) {
+      .proof-note,
+      body.he .proof-note {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
     .proof-note {
       margin-top: 22px;
       display: grid;
@@ -2889,6 +2906,199 @@
     }
 
 
+
+    /* v38 final polish: real logo, text-only Spark Match, real avatar portraits */
+    .real-logo-pill {
+      width: 176px;
+      height: 54px;
+      padding: 0 16px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #060814 0%, #10152a 100%);
+      border: 1px solid rgba(223,255,87,0.20);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        0 12px 28px rgba(17,21,45,0.12);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .sparkco-real-logo {
+      display: block;
+      width: 144px;
+      max-width: 100%;
+      height: auto;
+      max-height: 34px;
+      object-fit: contain;
+    }
+
+    .spark-match-text-tag {
+      padding: 8px 15px;
+      min-height: 34px;
+      color: #14182f;
+      background: rgba(255,255,255,0.90);
+      font-size: 13px;
+      letter-spacing: -0.01em;
+    }
+
+    .spark-match-meet .meet-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.05);
+    }
+
+    .spark-match-meet .meet-circle.left,
+    .spark-match-meet .meet-circle.right {
+      background: #11152d;
+    }
+
+    .spark-match-meet .meet-circle.left {
+      border-color: rgba(223,255,87,0.98);
+      box-shadow: 0 16px 34px rgba(223,255,87,0.18), 0 16px 34px rgba(17,21,45,0.22);
+    }
+
+    .spark-match-meet .meet-circle.right {
+      border-color: rgba(188,191,255,0.98);
+      box-shadow: 0 16px 34px rgba(125,92,255,0.18), 0 16px 34px rgba(17,21,45,0.22);
+    }
+
+    .spark-match-meet .meet-circle::after {
+      inset: -1px;
+      border: 2px solid rgba(255,255,255,0.58);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+    }
+
+    .avatar-language-demo {
+      position: relative;
+      min-height: 185px;
+      width: min(330px, 100%);
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(17,21,45,0.08);
+      box-shadow: 0 22px 48px rgba(17,21,45,0.12);
+      background: #151126;
+      isolation: isolate;
+    }
+
+    .avatar-language-demo img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transform: scale(1.04);
+      filter: saturate(1.04) contrast(1.02);
+      animation: avatarImageDrift 9s ease-in-out infinite;
+    }
+
+    .avatar-language-demo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 28% 32%, rgba(223,255,87,0.22), transparent 24%),
+        linear-gradient(180deg, rgba(17,21,45,0.06), rgba(17,21,45,0.34));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .avatar-demo-badge {
+      position: absolute;
+      left: 16px;
+      bottom: 15px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.88);
+      color: #11152d;
+      font-size: 12px;
+      font-weight: 920;
+      box-shadow: 0 10px 20px rgba(17,21,45,0.12);
+      backdrop-filter: blur(14px);
+    }
+
+    body.he .avatar-demo-badge {
+      left: auto;
+      right: 16px;
+    }
+
+    .avatar-demo-pulse {
+      position: absolute;
+      z-index: 2;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid rgba(223,255,87,0.82);
+      box-shadow: 0 0 0 0 rgba(223,255,87,0.22);
+      animation: avatarPulseMove 6.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .avatar-demo-pulse.one {
+      left: 54%;
+      top: 28%;
+    }
+
+    .avatar-demo-pulse.two {
+      width: 54px;
+      height: 54px;
+      left: 27%;
+      top: 48%;
+      border-color: rgba(188,191,255,0.86);
+      animation-delay: 1.1s;
+    }
+
+    @keyframes avatarImageDrift {
+      0%, 100% { transform: scale(1.04) translateX(0); }
+      50% { transform: scale(1.08) translateX(-8px); }
+    }
+
+    @keyframes avatarPulseMove {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.62; box-shadow: 0 0 0 0 rgba(223,255,87,0.18); }
+      50% { transform: translate(10px, -6px) scale(1.08); opacity: 0.95; box-shadow: 0 0 0 14px rgba(223,255,87,0.02); }
+    }
+
+    @media (max-width: 1060px) {
+      .real-logo-pill {
+        width: 152px;
+        height: 46px;
+        padding: 0 13px;
+      }
+
+      .sparkco-real-logo {
+        width: 126px;
+        max-height: 29px;
+      }
+
+      .avatar-language-demo {
+        width: 100%;
+        min-height: 220px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .real-logo-pill {
+        width: 136px;
+        height: 40px;
+        padding: 0 11px;
+      }
+
+      .sparkco-real-logo {
+        width: 112px;
+        max-height: 24px;
+      }
+
+      .avatar-language-demo {
+        min-height: 190px;
+      }
+    }
+
+
     @media (max-width: 1060px) {
       .main-nav { display: none; }
 
@@ -3415,18 +3625,8 @@
 <body>
   <header class="site-header">
     <a class="brand spark-lockup" href="#" aria-label="SPARKCOmmunity OS home">
-      <span class="sparkco-pill" aria-label="Sparkco">
-        <span class="sparkco-custom">
-          <span class="sparkco-text">spar</span>
-          <span class="spark-k" aria-hidden="true">
-            <i class="stem"></i>
-            <i class="ray ray-lt"></i>
-            <i class="ray ray-lb"></i>
-            <i class="ray ray-rt"></i>
-            <i class="ray ray-rb"></i>
-          </span>
-          <span class="sparkco-text">co</span>
-        </span>
+      <span class="sparkco-pill real-logo-pill" aria-label="Sparkco">
+        <img src="logo-sparkco-green.png" alt="Sparkco" class="sparkco-real-logo" />
       </span>
       <span class="community-lockup">Community</span>
       <span class="os-badge">OS</span>
@@ -3669,19 +3869,7 @@
               <path d="M18 22.4v2.4"></path>
             </svg>
           </div>
-            <h3>
-              <span class="spark-inline" aria-label="Spark Match">
-                <span class="sparkco-text">Spar</span>
-                <span class="spark-k" aria-hidden="true">
-                  <i class="stem"></i>
-                  <i class="ray ray-lt"></i>
-                  <i class="ray ray-lb"></i>
-                  <i class="ray ray-rt"></i>
-                  <i class="ray ray-rb"></i>
-                </span>
-                <span class="sparkco-text"> Match</span>
-              </span>
-            </h3>
+<h3>Spark Match</h3>
             <p><span class="lang-en">Member-to-member connections around interests, needs, and offers.</span><span class="lang-he">חיבורים בין חברים וחברות בקהילה סביב תחומי עניין, צרכים והצעות.</span></p>
           </article>
 
@@ -3781,7 +3969,7 @@
           <article class="proof-card">
             <!-- Replace this file to update the presence/circle room image: circle-room.png -->
             <!-- REAL IMAGE: circle room / presence screenshot -->
-            <img src="circle-room.png" alt="A circular community room designed around presence" />
+            <img src="circle-room.png" alt="A circular community room with participants gathered in inner and outer circles" />
             <div class="proof-content">
               <span class="proof-tag"><span class="spark">◎</span><span class="lang-en">Presence first</span><span class="lang-he">נוכחות קודם</span></span>
               <h2>
@@ -3798,27 +3986,16 @@
             <!-- REAL IMAGE: Spark Match inside the space screenshot -->
             <img src="spark-match.png" alt="Spark Match connection tool inside the Sparkco space" />
             <div class="proof-content">
-              <span class="proof-tag">
-                <span class="spark">✦</span>
-                <span class="spark-inline" aria-label="Spark Match">
-                  <span class="sparkco-text">Spar</span>
-                  <span class="spark-k" aria-hidden="true">
-                    <i class="stem"></i>
-                    <i class="ray ray-lt"></i>
-                    <i class="ray ray-lb"></i>
-                    <i class="ray ray-rt"></i>
-                    <i class="ray ray-rb"></i>
-                  </span>
-                  <span class="sparkco-text"> Match</span>
-                </span>
+              <span class="proof-tag spark-match-text-tag">
+                <span>Spark Match</span>
               </span>
               <h2>
                 <span class="block-en">Connection tools inside the space</span>
                 <span class="block-he">כלי חיבור בתוך המרחב</span>
               </h2>
               <div class="spark-match-meet" aria-hidden="true">
-                <span class="meet-circle left"></span>
-                <span class="meet-circle right"></span>
+                <span class="meet-circle left"><img src="sparkmatch-woman.png" alt="" /></span>
+                <span class="meet-circle right"><img src="sparkmatch-man.png" alt="" /></span>
                 <span class="meet-spark"></span>
               </div>
               <p class="block-en">Members don’t just consume content. They find each other. Spark Match helps people discover relevant members, share what they can offer, ask for what they need, and turn the community into a real network of relationships.</p>
@@ -3828,12 +4005,14 @@
         </div>
 
         <div class="proof-note">
-          <div class="avatar-presence" aria-hidden="true">
-            <div class="avatar-presence-inner"></div>
-            <div class="avatar-presence-label">
+          <div class="avatar-language-demo" aria-hidden="true">
+            <img src="avatar-community-room.png" alt="Sparkco live room with a presenter and diverse participant avatars" />
+            <span class="avatar-demo-badge">
               <span class="lang-en">avatar circle</span>
               <span class="lang-he">עיגול נוכחות</span>
-            </div>
+            </span>
+            <span class="avatar-demo-pulse one"></span>
+            <span class="avatar-demo-pulse two"></span>
           </div>
           <div class="proof-note-copy">
             <h3>

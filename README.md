@@ -119,3 +119,31 @@ Final links added:
 - Sparkco main site / Performance Layer / Sparki: https://www.sparkco.space
 
 Privacy and terms are not ready yet. Footer links currently open an email request to info@sparkco.space.
+
+
+## v37 Flat GitHub upload
+
+This version is prepared for GitHub's browser uploader when it does not preserve folders.
+
+Upload all files to the repository root, exactly like this:
+
+- index.html
+- README.md
+- ASSET_CHECKLIST.md
+- hero-club-hall.png
+- circle-room.png
+- spark-match.png
+- dashboard-preview.png
+- logo-sparkco-green.png
+
+For this version, do not use an assets folder.
+
+
+## v38 final visual polish
+
+Changes:
+- Header uses the real Sparkco logo on a dark background.
+- Spark Match branding is now text-only.
+- Spark Match meeting animation uses two realistic portrait avatars.
+- Circular-avatar language block uses a real room/avatar visual with subtle motion.
+- Flat root upload structure is preserved.
