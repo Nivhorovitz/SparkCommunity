@@ -3694,14 +3694,75 @@
       .image-wrap { aspect-ratio: 1 / 0.92; }
       .chip { font-size: 11px; }
     }
+  
+    /* v49 final logo fix: cropped uploaded Sparkcommunity logo */
+    .brand.spark-lockup {
+      gap: 12px;
+    }
+
+    .brand.spark-lockup .sparkcommunity-wordmark.real-logo-pill {
+      width: 330px;
+      min-width: 330px;
+      height: 58px;
+      padding: 0 22px;
+      border-radius: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: linear-gradient(180deg, #060814 0%, #10152a 100%);
+      border: 1px solid rgba(223,255,87,0.20);
+    }
+
+    .sparkcommunity-combined-logo {
+      display: block;
+      width: 272px;
+      max-width: 100%;
+      height: auto;
+      max-height: 40px;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .munity-extension {
+      display: none !important;
+    }
+
+    @media (max-width: 1060px) {
+      .brand.spark-lockup .sparkcommunity-wordmark.real-logo-pill {
+        width: 282px;
+        min-width: 282px;
+        height: 52px;
+        padding: 0 18px;
+      }
+
+      .sparkcommunity-combined-logo {
+        width: 232px;
+        max-height: 36px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .brand.spark-lockup .sparkcommunity-wordmark.real-logo-pill {
+        width: 230px;
+        min-width: 230px;
+        height: 46px;
+        padding: 0 14px;
+      }
+
+      .sparkcommunity-combined-logo {
+        width: 190px;
+        max-height: 31px;
+      }
+    }
+
   </style>
 </head>
 <body>
   <header class="site-header">
     <a class="brand spark-lockup" href="#" aria-label="SPARKCOmmunity OS home">
-      <span class="sparkco-pill real-logo-pill sparkcommunity-wordmark" aria-label="SPARKCOmmunity">
-        <img src="logo-sparkco-green.png" alt="Sparkco" class="sparkco-real-logo" />
-        <span class="munity-extension">mmunity</span>
+      <span class="sparkco-pill real-logo-pill sparkcommunity-wordmark" aria-label="Sparkcommunity">
+        <img src="sparkcommunity-logo.png" alt="Sparkcommunity" class="sparkcommunity-combined-logo" />
       </span>
       <span class="os-badge">OS</span>
     </a>
