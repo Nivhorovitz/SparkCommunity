@@ -162,3 +162,31 @@ Included:
 - Bold recurring revenue sentence.
 - Header wordmark fixed so it does not appear tiny.
 - Flat root structure for GitHub Pages.
+
+## v49 uploaded logo fix
+
+Updated the header logo using the uploaded Sparkcommunity logo.
+The logo file was cropped tightly so it appears large and clean inside the header pill.
+
+
+## v50 bigger logo
+- increased header logo size
+- removed dark rectangle from logo file by making background transparent
+- tightened crop and improved visibility inside header pill
+
+## v51 title fix
+
+Updated browser/page title:
+SPARKCOmmunity OS
+
+Removed old v3 suffix from the site title.
+
+## v52 SEO, email and avatar bridge repair
+
+Built from v51 and kept the stable layout.
+Changes:
+- Restored moving avatar circles in the gap between the image and text.
+- Added SEO and AI discovery metadata in the head.
+- Added robots.txt, sitemap.xml, llms.txt and CNAME.
+- Added an email CTA next to the WhatsApp CTA.
+- Kept the v50/v51 logo and title fixes.
