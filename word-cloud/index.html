@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ענן מילים שיתופי</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--bg:#0f1220;--card:#171a2b;--text:#fff;--muted:#adb3cf;--accent:#bcbfff;--lime:#e8ff6a;--cyan:#7fe7df;--pink:#ff9ed8;--orange:#ffb56b;--danger:#ff8d8d;--border:#303557}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,"Noto Sans Hebrew",sans-serif;background:radial-gradient(circle at 20% 10%,#25294b 0,transparent 32%),radial-gradient(circle at 80% 90%,#1a3b3d 0,transparent 28%),var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .app{width:min(1100px,100%);background:rgba(23,26,43,.94);border:1px solid rgba(255,255,255,.08);border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,.35);padding:24px;backdrop-filter:blur(12px)}
+    .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.title h1{margin:0;font-size:clamp(30px,5vw,52px)}.title p{margin:8px 0 0;color:var(--muted);font-size:18px}.title .meta{margin-top:10px;color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:8px 14px}.rightCol{display:flex;flex-direction:column;gap:10px;align-items:flex-end}.stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.badge{background:#232742;border:1px solid #34395f;padding:10px 14px;border-radius:999px;color:var(--accent);font-weight:700;white-space:nowrap}.badge strong{color:#fff}
+    #cloud{margin:22px 0;min-height:440px;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:14px 20px;padding:30px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.015));overflow:hidden}.word{font-weight:800;line-height:.95;transition:.25s transform,.25s opacity;animation:pop .3s ease both;cursor:default}.word:hover{transform:scale(1.07)}@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+    form{display:flex;gap:10px}.inputWrap{flex:1;display:flex;align-items:center;background:#0f1220;border:1px solid var(--border);border-radius:18px;padding:0 16px}input{width:100%;border:0;outline:0;background:transparent;color:#fff;font-size:20px;padding:16px 0;text-align:right}button{border:0;border-radius:18px;background:linear-gradient(135deg,var(--accent),#8d92ff);color:#111426;font-weight:900;font-size:18px;padding:0 26px;cursor:pointer;min-height:54px}button.danger{background:linear-gradient(135deg,#ffb4b4,#ff8d8d)}button:disabled{opacity:.45;cursor:not-allowed}.footer{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-top:10px}.hint{color:var(--muted);font-size:14px;line-height:1.4}.status{font-size:14px;color:var(--muted);text-align:left}.status.error{color:#ffb4b4}.status.ok{color:#b7ffbe}.empty{color:var(--muted);font-size:18px;align-self:center}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.limitReached{color:var(--lime);font-weight:700}
+    @media(max-width:760px){.app{padding:16px;border-radius:20px}#cloud{min-height:360px;padding:18px}.top,.footer{flex-direction:column}.rightCol,.toolbar{align-items:flex-start;justify-content:flex-start}.stats{justify-content:flex-start}form{flex-direction:column}button{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="top">
+      <div class="title"><h1>ענן מילים</h1><p id="prompt">מה אתם לוקחים מהחוויה?</p><div class="meta"><span id="limitInfo">עד 3 תשובות לכל משתתף</span><span>המערכת מאחדת וריאציות דומות כמו הקשבה / להקשיב</span></div></div>
+      <div class="rightCol"><div class="stats"><div class="badge"><strong id="count">0</strong> תשובות</div><div class="badge"><strong id="uniqueCount">0</strong> מושגים</div><div class="badge"><strong id="remaining">3</strong> נשארו לך</div></div><div id="toolbar" class="toolbar" hidden><button id="resetBtn" type="button" class="danger">איפוס ענן</button></div></div>
+    </div>
+    <section id="cloud"><div class="empty">כתבו את המילה הראשונה ✨</div></section>
+    <form id="form"><div class="inputWrap"><input id="word" maxlength="40" autocomplete="off" placeholder="כתבו מילה או שתיים…" /></div><button id="send" type="submit">שליחה</button></form>
+    <div class="footer"><div class="hint" id="hint">כולם באותה session רואים את הענן מתעדכן בזמן אמת.</div><div class="status" id="status"></div></div>
+  </main>
+<script>
+const SUPABASE_URL='https://ukgpimzwnryrcgwzsfas.supabase.co';
+const SUPABASE_KEY='sb_publishable_lYG2Y2odDxCCuq87gHdk-Q_lOsGXEtx';
+const client=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const params=new URLSearchParams(location.search);
+const session=(params.get('session')||'demo').trim().slice(0,100);
+const customPrompt=params.get('prompt');
+const limit=Math.min(3,Math.max(1,parseInt(params.get('limit')||'3',10)||3));
+const adminMode=params.get('admin')==='1';
+const participantStorageKey='wc_participant_id';
+let participantId=localStorage.getItem(participantStorageKey);
+if(!participantId){participantId='p-'+Math.random().toString(36).slice(2,10)+Date.now().toString(36);localStorage.setItem(participantStorageKey,participantId)}
+const cloud=document.getElementById('cloud'),countEl=document.getElementById('count'),uniqueCountEl=document.getElementById('uniqueCount'),remainingEl=document.getElementById('remaining'),promptEl=document.getElementById('prompt'),form=document.getElementById('form'),input=document.getElementById('word'),send=document.getElementById('send'),statusEl=document.getElementById('status'),resetBtn=document.getElementById('resetBtn'),toolbar=document.getElementById('toolbar'),limitInfo=document.getElementById('limitInfo'),hint=document.getElementById('hint');
+if(customPrompt) promptEl.textContent=customPrompt.slice(0,120);
+limitInfo.textContent=`עד ${limit} ${limit===1?'תשובה':'תשובות'} לכל משתתף`;
+hint.textContent=`כל מי שנמצא ב-session "${session}" רואה את הענן מתעדכן בזמן אמת.`;
+if(adminMode) toolbar.hidden=false;
+let entries=[];
+const colors=['#bcbfff','#e8ff6a','#7fe7df','#ff9ed8','#ffb56b','#8db8ff'];
+const aliasMap=new Map([['להקשיב','הקשבה'],['הקשבה','הקשבה'],['מקשיב','הקשבה'],['מקשיבה','הקשבה'],['קשב','הקשבה'],['להתחבר','חיבור'],['מתחבר','חיבור'],['מתחברת','חיבור'],['חיבור','חיבור'],['לשתף','שיתוף'],['משתף','שיתוף'],['משתפת','שיתוף'],['שיתוף','שיתוף'],['ללמוד','למידה'],['לומד','למידה'],['לומדת','למידה'],['למידה','למידה'],['לסמוך','אמון'],['סומך','אמון'],['סומכת','אמון'],['אמון','אמון'],['לשתף פעולה','שותפות'],['שיתוף פעולה','שותפות'],['שותפות','שותפות'],['פתוח','פתיחות'],['פתוחה','פתיחות'],['פתיחות','פתיחות'],['קרוב','קרבה'],['קרובה','קרבה'],['קרבה','קרבה']]);
+function cleanText(s){return(s||'').normalize('NFKC').replace(/[\u0591-\u05C7]/g,'').replace(/["'”“.,!?;:()\[\]{}\\/]+/g,' ').replace(/\s+/g,' ').trim()}
+function norm(s){return cleanText(s).slice(0,40)}
+function canonicalize(s){const raw=norm(s);if(!raw)return'';for(const t of [raw,raw.startsWith('ל')?raw.slice(1):raw,raw.startsWith('ו')?raw.slice(1):raw]){if(aliasMap.has(t))return aliasMap.get(t)}return raw}
+function participantCount(){return entries.filter(e=>e.participant_id===participantId).length}
+function remainingCount(){return Math.max(0,limit-participantCount())}
+function setStatus(message='',type=''){statusEl.className='status'+(type?` ${type}`:'');statusEl.textContent=message}
+function updateEntryState(){const remain=remainingCount();remainingEl.textContent=remain;const reached=remain<=0;send.disabled=reached;input.disabled=reached;if(reached){input.placeholder='הגעת למספר התשובות המותר';setStatus('הגעת למספר התשובות המותר במפגש הזה','ok')}else{input.placeholder='כתבו מילה או שתיים…'}}
+function render(){const map=new Map();entries.forEach(e=>{const c=norm(e.canonical_word||canonicalize(e.word));if(c)map.set(c,(map.get(c)||0)+1)});countEl.textContent=entries.length;uniqueCountEl.textContent=map.size;cloud.innerHTML='';if(!map.size){cloud.innerHTML='<div class="empty">כתבו את המילה הראשונה ✨</div>';updateEntryState();return}const arr=[...map.entries()].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'he')),max=Math.max(...arr.map(x=>x[1]));arr.forEach(([w,n],i)=>{const el=document.createElement('span');el.className='word';el.textContent=w;el.style.fontSize=(28+Math.round(58*Math.sqrt(n/max)))+'px';el.style.color=colors[i%colors.length];el.title=n+' פעמים';cloud.appendChild(el)});updateEntryState()}
+async function load(){let query=client.from('word_cloud_entries').select('*').eq('session',session).order('created_at',{ascending:true});const{data,error}=await query;if(error){cloud.innerHTML='<div class="empty">לא הצלחתי לטעון את הענן</div>';console.error(error);return}entries=data||[];render()}
+client.channel('word-cloud-'+session).on('postgres_changes',{event:'INSERT',schema:'public',table:'word_cloud_entries',filter:`session=eq.${session}`},payload=>{entries.push(payload.new);render()}).on('postgres_changes',{event:'DELETE',schema:'public',table:'word_cloud_entries',filter:`session=eq.${session}`},()=>load()).subscribe();
+form.addEventListener('submit',async e=>{e.preventDefault();const raw=norm(input.value);if(!raw||remainingCount()<=0)return;send.disabled=true;const canonical_word=canonicalize(raw);let payload={session,word:raw,canonical_word,participant_id:participantId};let{error}=await client.from('word_cloud_entries').insert(payload);if(error){payload={session,word:raw};({error}=await client.from('word_cloud_entries').insert(payload))}send.disabled=false;if(error){console.error(error);setStatus('השליחה לא הצליחה','error');return}input.value='';input.focus()});
+resetBtn.addEventListener('click',()=>{if(!adminMode)return;const next=session+'-'+Date.now().toString(36);const u=new URL(location.href);u.searchParams.set('session',next);setStatus('נוצר session חדש. הקישור החדש הועתק ללוח.','ok');navigator.clipboard?.writeText(u.toString()).catch(()=>{});alert('נוצר session חדש והקישור הועתק ללוח. השתמש באותו session גם בקישור המשתתפים.')});
+load();
+</script>
+</body>
+</html>
